@@ -62,12 +62,16 @@ To run the complete suite of unit tests, use the Maven Wrapper's `test` command.
 ## 📝 Application Usage
 
 Once the application is running, you can use the following commands:
+The following commands are available once the application is running:
 ```
-| Command           | Description                                        | Example         |
-| :---------------- | :------------------------------------------------- | :-------------- |
-| `CASHIN <amount>` | Adds the specified amount to your balance.         | `CASHIN 500000` |
-| `LISTBILLS`       | Displays all available bills and their status.     | `LISTBILLS`     |
-| `PAY <billId>`    | Pays the bill with the specified ID using your balance. | `PAY 1`         |
-| `LISTPAYMENTS`    | Shows a history of all completed payments.         | `LISTPAYMENTS`  |
-| `EXIT`            | Closes the application.                            | `EXIT`          |
+| Command                                  | Description                                                              | Example                          |
+| :--------------------------------------- | :----------------------------------------------------------------------- | :------------------------------- |
+| `CASH_IN <amount>`                       | Adds the specified amount to your available balance.                     | `CASH_IN 500000`                 |
+| `LIST_BILL`                              | Displays all available bills and their current status.                   | `LIST_BILL`                      |
+| `PAY <billId> <billId>...`               | Pays one or more bills by their IDs using your balance.                  | `PAY 1 3`                        |
+| `SCHEDULE_BILL <billId> <dueDate>`       | Schedules a payment for an unpaid bill on a specific date (`dd/MM/yyyy`).  | `SCHEDULE_BILL 2 25/10/2020`     |
+| `DUE_DATE`                               | Lists all bills that are currently unpaid.                               | `DUE_DATE`                       |
+| `LIST_PAYMENTS`                          | Shows a history of all payments and their status (PROCESSED/PENDING).    | `LIST_PAYMENTS`                  |
+| `SEARCH_BILL_BY_PROVIDER <provider>`     | Searches for and displays all bills from a specific provider.            | `SEARCH_BILL_BY_PROVIDER VNPT`   |
+| `EXIT`                                   | Closes the application.                                                  | `EXIT`                           |
 ```
