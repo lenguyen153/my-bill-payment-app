@@ -47,7 +47,7 @@ public class DataStore {
         long totalAmount = 0;
         boolean hasErrors = false;
 
-        // Phase 1: Validate all bills and calculate total amount
+        // Validate all bills and calculate total amount
         for (int billId : billIds.stream().distinct().collect(Collectors.toList())) { // Use distinct IDs
             Bill bill = findBill(billId);
             if (bill == null) {
@@ -67,14 +67,14 @@ public class DataStore {
             return;
         }
 
-        // Phase 2: Check if balance is sufficient
+        //Check if balance is sufficient
         if (balance < totalAmount) {
             System.out.println("Sorry! Not enough funds to proceed with payment.");
             System.out.println("Total amount needed: " + totalAmount);
             return;
         }
 
-        // Phase 3: Execute payment for all valid bills
+        //Execute payment for all valid bills
         for (Bill bill : billsToPay) {
             balance -= bill.getAmount();
             bill.markPaid();
@@ -101,6 +101,16 @@ public class DataStore {
         System.out.println("No. Amount Payment Date State Bill Id");
         for (Payment p : payments) {
             System.out.println(p);
+        }
+    }
+
+    // List all payments
+    public void listUnpaidBills() {
+        System.out.println("Bill No. Type Amount Due Date State PROVIDER");
+        for (Bill bill : bills) {
+            if (bill.getState().equals("NOT_PAID")) {
+                System.out.println(bill);
+            }
         }
     }
 

@@ -164,25 +164,25 @@ class BillPaymentAppTest {
         }
 
         @Test
-        @DisplayName("12. payBill should fail for a non-existent bill ID")
-        void testPayBill_Failure_BillNotFound() {
-            store.payBill(999);
+        @DisplayName("12. payBills should fail for a non-existent bill ID")
+        void testpayBills_Failure_BillNotFound() {
+            store.payBills(999);
             assertTrue(getOutput().contains("Sorry! Not found a bill with such id"));
         }
 
         @Test
-        @DisplayName("13. payBill should fail due to insufficient funds")
-        void testPayBill_Failure_InsufficientFunds() {
+        @DisplayName("13. payBills should fail due to insufficient funds")
+        void testpayBills_Failure_InsufficientFunds() {
             store.cashIn(100000); // Bill 1 costs 200000
-            store.payBill(1);
+            store.payBills(1);
             assertTrue(getOutput().contains("Sorry! Not enough funds to proceed with payment."));
         }
 
         @Test
-        @DisplayName("14. payBill should succeed with sufficient funds")
-        void testPayBill_Success() {
+        @DisplayName("14. payBills should succeed with sufficient funds")
+        void testpayBills_Success() {
             store.cashIn(1000000);
-            store.payBill(1); // Pay bill 1 (amount 200000)
+            store.payBills(1); // Pay bill 1 (amount 200000)
             String output = getOutput();
             
             assertAll("Successful payment verification",
@@ -192,12 +192,12 @@ class BillPaymentAppTest {
         }
 
         @Test
-        @DisplayName("15. payBill should fail if the bill is already paid")
-        void testPayBill_Failure_BillAlreadyPaid() {
+        @DisplayName("15. payBills should fail if the bill is already paid")
+        void testpayBills_Failure_BillAlreadyPaid() {
             store.cashIn(500000);
-            store.payBill(1); // First payment, successful
+            store.payBills(1); // First payment, successful
             outContent.reset(); // Clear the output stream
-            store.payBill(1); // Second attempt to pay
+            store.payBills(1); // Second attempt to pay
             
             assertTrue(getOutput().contains("Bill already paid."));
         }
@@ -206,7 +206,7 @@ class BillPaymentAppTest {
         @DisplayName("16. After payment, bill state should be PAID")
         void testBillState_AfterSuccessfulPayment() {
             store.cashIn(500000);
-            store.payBill(2); // Pay bill 2
+            store.payBills(2); // Pay bill 2
             outContent.reset();
             store.listBills();
             
@@ -218,7 +218,7 @@ class BillPaymentAppTest {
         @DisplayName("17. After payment, a new payment record should be created")
         void testListPayments_AfterSuccessfulPayment() {
             store.cashIn(1000000); // Enough money
-            store.payBill(3); 
+            store.payBills(3); 
             outContent.reset();
             store.listPayments();
             String output = getOutput();
@@ -230,19 +230,19 @@ class BillPaymentAppTest {
         }
 
         @Test
-        @DisplayName("18. payBill with exact funds should succeed and balance becomes zero")
-        void testPayBill_WithExactFunds_ShouldSucceedAndBalanceBecomesZero() {
+        @DisplayName("18. payBills with exact funds should succeed and balance becomes zero")
+        void testpayBills_WithExactFunds_ShouldSucceedAndBalanceBecomesZero() {
             store.cashIn(200000); // Exact amount for bill 1
-            store.payBill(1);
+            store.payBills(1);
             
             assertTrue(getOutput().contains("Your current balance after payment: 0"));
         }
 
         @Test
         @DisplayName("19. Paying one bill should not affect the state of other bills")
-        void testPayBill_DoesNotAffectOtherBills() {
+        void testpayBills_DoesNotAffectOtherBills() {
             store.cashIn(1000000);
-            store.payBill(1); // Pay bill 1
+            store.payBills(1); // Pay bill 1
             outContent.reset();
             store.listBills();
             String output = getOutput();
@@ -258,8 +258,8 @@ class BillPaymentAppTest {
         @DisplayName("20. Multiple payments should create multiple records in listPayments")
         void testListPayments_AfterMultiplePayments() {
             store.cashIn(1000000);
-            store.payBill(1);
-            store.payBill(2);
+            store.payBills(1);
+            store.payBills(2);
             outContent.reset();
             store.listPayments();
             String output = getOutput();

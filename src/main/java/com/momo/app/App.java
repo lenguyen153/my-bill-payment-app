@@ -11,10 +11,10 @@ public class App {
 
         System.out.println("Welcome to Bill Payment System!");
         System.out.println("Available commands:");
-        System.out.println("CASHIN <amount>");
-        System.out.println("LIST_BILLS");
+        System.out.println("CASH_IN <amount>");
+        System.out.println("LIST_BILL");
         System.out.println("PAY <billId> <billId> <billId> ...");
-        System.out.println("LISTPAYMENTS");
+        System.out.println("LIST_PAYMENTS");
         System.out.println("EXIT");
 
         while (true) {
@@ -29,7 +29,7 @@ public class App {
             String command = parts[0].toUpperCase();
 
             switch (command) {
-                case "CASHIN":
+                case "CASH_IN":
                     if (parts.length < 2) {
                         System.out.println("Usage: CASHIN <amount>");
                         break;
@@ -42,7 +42,7 @@ public class App {
                     }
                     break;
 
-                case "LIST_BILLS":
+                case "LIST_BILL":
                     store.listBills();
                     break;
 
@@ -62,7 +62,7 @@ public class App {
                     }
                     break;
 
-                case "LISTPAYMENTS":
+                case "LIST_PAYMENTS":
                     store.listPayments();
                     break;
                 
@@ -71,7 +71,7 @@ public class App {
                     break;
                 
                 case "DUE_DATE":
-                    store.listPayments();
+                    store.listUnpaidBills();
                     break;
 
                 case "SEARCH_BILL_BY_PRODVIDER":
