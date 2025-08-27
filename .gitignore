@@ -1,0 +1,45 @@
+# =================================================================
+# Compiled Java Class Files and Archives
+# =================================================================
+*.class
+*.jar
+*.war
+*.ear
+
+# =================================================================
+# Maven Build Directory
+# =================================================================
+# This is the most important one. It contains all compiled code,
+# dependencies, and packaged applications.
+target/
+
+# Maven release plugin files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+build.log
+
+# =================================================================
+# IDE-Specific Files (IntelliJ, Eclipse, VS Code)
+# =================================================================
+
+# VS Code
+.vscode/
+
+# =================================================================
+# Log Files and Temporary Files
+# =================================================================
+*.log
+*.tmp
+
+# =================================================================
+# Operating System Generated Files
+# =================================================================
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
