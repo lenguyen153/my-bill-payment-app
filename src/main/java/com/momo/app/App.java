@@ -16,6 +16,8 @@ public class App {
         System.out.println("PAY <billId> <billId> <billId> ...");
         System.out.println("LIST_PAYMENTS");
         System.out.println("SEARCH_BILL_BY_PROVIDER <provider>");
+        System.out.println("SCHEDULE_BILL <billId> <dueDate>");
+        System.out.println("DUE_DATE");
         System.out.println("EXIT");
 
         while (true) {
@@ -67,8 +69,12 @@ public class App {
                     store.listPayments();
                     break;
                 
-                case "SCHEDULE":
-                    store.listPayments();
+                case "SCHEDULE_BILL":
+                    if (parts.length < 3) {
+                        System.out.println("Usage: SCHEDULE_BILL <billId> <dueDate>");
+                        break;
+                    }
+                    store.scheduleBill(Integer.parseInt(parts[1]), parts[2]);
                     break;
                 
                 case "DUE_DATE":

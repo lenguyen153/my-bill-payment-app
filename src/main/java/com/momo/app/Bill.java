@@ -8,6 +8,7 @@ public class Bill {
     private LocalDate dueDate; // due date of the bill
     private String state;      // NOT_PAID, PAID
     private String provider;   // EVN, SAVACO, VNPT, ...
+    private LocalDate scheduledDate; // Can be null
 
     public Bill(int id, String type, int amount, LocalDate dueDate, String provider) {
         this.id = id;
@@ -16,6 +17,7 @@ public class Bill {
         this.dueDate = dueDate;
         this.provider = provider;
         this.state = "NOT_PAID";
+        this.scheduledDate = null; // Initially null
     }
 
     // Getters
@@ -43,10 +45,29 @@ public class Bill {
         return provider; 
     }
 
-    // Mark bill as paid
-    public void markPaid() {
-        this.state = "PAID";
+    public LocalDate getScheduledDate() { 
+        return scheduledDate; 
     }
+
+    public boolean setScheduledDate(LocalDate newScheduledDate) {
+        if (newScheduledDate.isAfter(this.dueDate)) {
+            System.out.println("Error: Scheduled date (" + newScheduledDate + ") cannot be after the due date (" + this.dueDate + ").");
+            return false;
+        }
+        this.scheduledDate = newScheduledDate;
+        return true;
+    }
+
+    // Mark bill as PROCESSED
+    public void markProcessed() {
+        this.state = "PROCESSED";
+    }
+
+    // Mark bill as PENDING
+    public void markPending() {
+        this.state = "PENDING";
+    }
+    
 
     @Override
     public String toString() {

@@ -3,6 +3,8 @@ package com.momo.app;
 import java.util.*;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class DataStore {
     private int balance;
@@ -53,8 +55,8 @@ public class DataStore {
             if (bill == null) {
                 System.out.println("Error: Bill with id " + billId + " not found.");
                 hasErrors = true;
-            } else if ("PAID".equals(bill.getState())) {
-                System.out.println("Error: Bill with id " + billId + " is already paid.");
+            } else if ("PROCESSED".equals(bill.getState())) {
+                System.out.println("Error: Bill with id " + billId + " is already processed.");
                 hasErrors = true;
             } else {
                 billsToPay.add(bill);
@@ -77,7 +79,7 @@ public class DataStore {
         // Execute payment for all valid bills
         for (Bill bill : billsToPay) {
             balance -= bill.getAmount();
-            bill.markPaid();
+            bill.markProcessed();
             Payment payment = new Payment(
                 payments.size() + 1,
                 bill.getAmount(),
@@ -121,6 +123,51 @@ public class DataStore {
             if (bill.getProvider().equals(provider)) {
                 System.out.println(bill);
             }
+        }
+    }
+
+    // Schedule a bill
+    public void scheduleBill(int billId, String dueDate) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate scheduledDate;
+
+        try {
+            scheduledDate = LocalDate.parse(dueDate, formatter);
+        } catch (DateTimeParseException e) {
+            System.out.println("Error: Invalid date format. Please use DD/MM/YYYY.");
+            return;
+        }
+
+        Bill bill = findBill(billId);
+        if (bill == null) {
+            System.out.println("Error: Bill with id " + billId + " not found.");
+            return;
+        }
+
+        if ("PROCESSED".equals(bill.getState())) {
+            System.out.println("Error: Bill with id " + billId + " is already paid.");
+            return;
+        }
+        if (bill.getScheduledDate() != null) {
+            System.out.println("Error: A payment for bill id " + billId + " is already scheduled.");
+            return;
+        }
+
+        try {
+            boolean success = bill.setScheduledDate(scheduledDate);
+            if (success) {
+                 System.out.println("Payment for bill " + billId + " is scheduled on " + dueDate);
+                 Payment payment = new Payment(
+                    payments.size() + 1,
+                    bill.getAmount(),
+                    LocalDate.now(), // Use current date for payment
+                    "PENDING",
+                    bill.getId()
+                );
+                payments.add(payment);
+            }
+        } catch (DateTimeParseException e) {
+            System.out.println("Error: Invalid date format. Please use DD/MM/YYYY.");
         }
     }
 
