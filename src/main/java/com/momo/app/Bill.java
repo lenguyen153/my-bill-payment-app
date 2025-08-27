@@ -58,14 +58,9 @@ public class Bill {
         return true;
     }
 
-    // Mark bill as PROCESSED
-    public void markProcessed() {
-        this.state = "PROCESSED";
-    }
-
-    // Mark bill as PENDING
-    public void markPending() {
-        this.state = "PENDING";
+    // Mark bill as PAID
+    public void markPaid() {
+        this.state = "PAID";
     }
     
 

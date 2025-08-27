@@ -55,8 +55,8 @@ public class DataStore {
             if (bill == null) {
                 System.out.println("Error: Bill with id " + billId + " not found.");
                 hasErrors = true;
-            } else if ("PROCESSED".equals(bill.getState())) {
-                System.out.println("Error: Bill with id " + billId + " is already processed.");
+            } else if ("PAID".equals(bill.getState())) {
+                System.out.println("Error: Bill with id " + billId + " is already paid.");
                 hasErrors = true;
             } else {
                 billsToPay.add(bill);
@@ -79,15 +79,25 @@ public class DataStore {
         // Execute payment for all valid bills
         for (Bill bill : billsToPay) {
             balance -= bill.getAmount();
-            bill.markProcessed();
-            Payment payment = new Payment(
-                payments.size() + 1,
-                bill.getAmount(),
-                LocalDate.now(), // Use current date for payment
-                "PROCESSED",
-                bill.getId()
-            );
-            payments.add(payment);
+            bill.markPaid();
+            // Find an existing PENDING payment for this bill
+            Payment existingPayment = findPendingPaymentByBillId(bill.getId());
+
+            if (existingPayment != null) {
+                // If found, update it to PROCESSED
+                existingPayment.setState("PROCESSED");
+                existingPayment.setPaymentDate(LocalDate.now());
+            } else {
+                // If not found, create a new PROCESSED payment record
+                Payment payment = new Payment(
+                    payments.size() + 1,
+                    bill.getAmount(),
+                    LocalDate.now(),
+                    "PROCESSED",
+                    bill.getId()
+                );
+                payments.add(payment);
+            }
         }
 
         System.out.println("Payment has been completed for " + billsToPay.size() + " bill(s).");
@@ -175,6 +185,16 @@ public class DataStore {
     private Bill findBill(int id) {
         for (Bill b : bills) {
             if (b.getId() == id) return b;
+        }
+        return null;
+    }
+
+    //  Helper to find a pending payment by its bill ID
+    private Payment findPendingPaymentByBillId(int billId) {
+        for (Payment p : payments) {
+            if (p.getBillId() == billId && "PENDING".equals(p.getState())) {
+                return p;
+            }
         }
         return null;
     }

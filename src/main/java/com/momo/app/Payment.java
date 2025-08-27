@@ -38,6 +38,14 @@ public class Payment {
         return billId; 
     }
 
+    public void setState(String state) {
+        this.state = state;
+    }
+
+    public void setPaymentDate(LocalDate paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
     @Override
     public String toString() {
         return id + ". " + amount + " " + paymentDate + " " + state + " " + billId;
