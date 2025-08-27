@@ -63,11 +63,65 @@ To run the complete suite of unit tests, use the Maven Wrapper's `test` command.
 
 Once the application is running, you can use the following commands:
 ```
-| Command           | Description                                        | Example         |
-| :---------------- | :------------------------------------------------- | :-------------- |
-| `CASHIN <amount>` | Adds the specified amount to your balance.         | `CASHIN 500000` |
-| `LISTBILLS`       | Displays all available bills and their status.     | `LISTBILLS`     |
-| `PAY <billId>`    | Pays the bill with the specified ID using your balance. | `PAY 1`         |
-| `LISTPAYMENTS`    | Shows a history of all completed payments.         | `LISTPAYMENTS`  |
-| `EXIT`            | Closes the application.                            | `EXIT`          |
+Of course. Here is a complete README.md file for your project. This file explains what the project is, how to run it, and details all the available commands with an example usage flow.
+
+You can save this content as a file named README.md in the root directory of your Java project.
+Markdown
+
+# Bill Payment System 🧾
+
+A simple command-line application built in Java for managing and paying bills. This system allows users to manage a balance, view outstanding bills, schedule payments, and process payments directly from the console.
+
+---
+
+## ✨ Features
+
+* **Manage Balance**: Add funds to your account with the `CASH_IN` command.
+* **View Bills**: List all bills, see their status, or search for bills by a specific provider.
+* **Pay Bills**: Pay one or more bills in a single transaction.
+* **Schedule Payments**: Schedule a payment for a future date to avoid missing deadlines.
+* **Payment History**: View a complete list of all `PROCESSED` and `PENDING` payments.
+
+---
+
+## 🚀 Getting Started
+
+Follow these instructions to get the project compiled and running on your local machine.
+
+### Prerequisites
+
+* **Java Development Kit (JDK)** 11 or newer.
+* **Apache Maven** to build the project.
+
+### How to Run
+
+1.  **Clone the repository or navigate to your project's root directory.**
+
+2.  **Compile the project using Maven.** This will create a runnable `.jar` file in the `target/` directory.
+    ```shell
+    mvn clean install
+    ```
+
+3.  **Run the application from the command line.**
+    ```shell
+    java -jar target/app-1.0-SNAPSHOT.jar 
+    ```
+    *(Note: The name of the `.jar` file may vary based on your `pom.xml` configuration.)*
+
+---
+
+## ⌨️ Commands
+
+The following commands are available once the application is running:
+```
+| Command                                  | Description                                                              | Example                          |
+| :--------------------------------------- | :----------------------------------------------------------------------- | :------------------------------- |
+| `CASH_IN <amount>`                       | Adds the specified amount to your available balance.                     | `CASH_IN 500000`                 |
+| `LIST_BILL`                              | Displays all available bills and their current status.                   | `LIST_BILL`                      |
+| `PAY <billId> <billId>...`               | Pays one or more bills by their IDs using your balance.                  | `PAY 1 3`                        |
+| `SCHEDULE_BILL <billId> <dueDate>`       | Schedules a payment for an unpaid bill on a specific date (`dd/MM/yyyy`).  | `SCHEDULE_BILL 2 25/10/2020`     |
+| `DUE_DATE`                               | Lists all bills that are currently unpaid.                               | `DUE_DATE`                       |
+| `LIST_PAYMENTS`                          | Shows a history of all payments and their status (PROCESSED/PENDING).    | `LIST_PAYMENTS`                  |
+| `SEARCH_BILL_BY_PROVIDER <provider>`     | Searches for and displays all bills from a specific provider.            | `SEARCH_BILL_BY_PROVIDER VNPT`   |
+| `EXIT`                                   | Closes the application.                                                  | `EXIT`                           |
 ```
