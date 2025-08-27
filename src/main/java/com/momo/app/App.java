@@ -15,6 +15,7 @@ public class App {
         System.out.println("LIST_BILL");
         System.out.println("PAY <billId> <billId> <billId> ...");
         System.out.println("LIST_PAYMENTS");
+        System.out.println("SEARCH_BILL_BY_PROVIDER <provider>");
         System.out.println("EXIT");
 
         while (true) {
@@ -74,8 +75,12 @@ public class App {
                     store.listUnpaidBills();
                     break;
 
-                case "SEARCH_BILL_BY_PRODVIDER":
-                    store.listPayments();
+                case "SEARCH_BILL_BY_PROVIDER":
+                if (parts.length < 2) {
+                    System.out.println("Usage: SEARCH_BILL_BY_PROVIDER <provider>");
+                    break;
+                }
+                    store.listBillbyProvider(parts[1]);
                     break;
 
                 default:

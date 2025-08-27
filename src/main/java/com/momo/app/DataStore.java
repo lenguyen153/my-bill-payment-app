@@ -74,7 +74,7 @@ public class DataStore {
             return;
         }
 
-        //Execute payment for all valid bills
+        // Execute payment for all valid bills
         for (Bill bill : billsToPay) {
             balance -= bill.getAmount();
             bill.markPaid();
@@ -104,11 +104,21 @@ public class DataStore {
         }
     }
 
-    // List all payments
+    // List all unpaid bills
     public void listUnpaidBills() {
         System.out.println("Bill No. Type Amount Due Date State PROVIDER");
         for (Bill bill : bills) {
             if (bill.getState().equals("NOT_PAID")) {
+                System.out.println(bill);
+            }
+        }
+    }
+
+    // List all bills by provider
+    public void listBillbyProvider(String provider) {
+        System.out.println("Bill No. Type Amount Due Date State PROVIDER");
+        for (Bill bill : bills) {
+            if (bill.getProvider().equals(provider)) {
                 System.out.println(bill);
             }
         }
