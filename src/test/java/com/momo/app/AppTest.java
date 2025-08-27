@@ -50,7 +50,7 @@ class BillPaymentSystemTest {
     void cashIn_multipleTimes_shouldAccumulateBalance() {
         store.cashIn(100000);
         store.cashIn(200000);
-        assertTrue(outContent.toString().endsWith("Your available balance: 300000\n"));
+        assertTrue(outContent.toString().contains("Your available balance: 300000"));
     }
 
     // --- PAY Tests (11 Tests) ---
@@ -218,7 +218,8 @@ class BillPaymentSystemTest {
     @DisplayName("19. SEARCH_BILL_BY_PROVIDER with non-existent provider should return nothing")
     void listBillbyProvider_withNonExistentProvider_shouldReturnNothing() {
         store.listBillbyProvider("NONEXISTENT");
-        assertEquals("Bill No. Type Amount Due Date State PROVIDER\n", outContent.toString());
+        String expectedOutput = "Bill No. Type Amount Due Date State PROVIDER" + System.lineSeparator();
+        assertEquals(expectedOutput, outContent.toString());
     }
 
     @Test

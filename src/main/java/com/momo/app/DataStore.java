@@ -154,7 +154,7 @@ public class DataStore {
             return;
         }
 
-        if ("PROCESSED".equals(bill.getState())) {
+        if ("PAID".equals(bill.getState())) {
             System.out.println("Error: Bill with id " + billId + " is already paid.");
             return;
         }
