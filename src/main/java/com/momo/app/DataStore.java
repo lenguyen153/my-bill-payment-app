@@ -2,6 +2,7 @@ package com.momo.app;
 
 import java.util.*;
 import java.time.LocalDate;
+import java.util.stream.Collectors;
 
 public class DataStore {
     private int balance;
@@ -33,43 +34,62 @@ public class DataStore {
         }
     }
 
-    // Pay a single bill
-    public void payBill(int billId) {
-        System.out.println("Current balance before payment: " + balance);
-    
-        Bill bill = findBill(billId);
-        if (bill == null) {
-            System.out.println("Sorry! Not found a bill with such id");
+    // Pay MULTIPLE bills at once
+    public void payBills(List<Integer> billIds) {
+        if (billIds.isEmpty()) {
+            System.out.println("Usage: PAY <billId1> <billId2> ...");
             return;
         }
-    
-        if (bill.getState().equals("PAID")) {
-            System.out.println("Bill already paid.");
+        
+        System.out.println("Your available balance: " + balance);
+
+        List<Bill> billsToPay = new ArrayList<>();
+        long totalAmount = 0;
+        boolean hasErrors = false;
+
+        // Phase 1: Validate all bills and calculate total amount
+        for (int billId : billIds.stream().distinct().collect(Collectors.toList())) { // Use distinct IDs
+            Bill bill = findBill(billId);
+            if (bill == null) {
+                System.out.println("Error: Bill with id " + billId + " not found.");
+                hasErrors = true;
+            } else if ("PAID".equals(bill.getState())) {
+                System.out.println("Error: Bill with id " + billId + " is already paid.");
+                hasErrors = true;
+            } else {
+                billsToPay.add(bill);
+                totalAmount += bill.getAmount();
+            }
+        }
+
+        if (hasErrors) {
+            System.out.println("Transaction failed due to one or more errors. No bills were paid.");
             return;
         }
-    
-        if (balance < bill.getAmount()) {
-            System.out.println("Current balance: " + balance);
+
+        // Phase 2: Check if balance is sufficient
+        if (balance < totalAmount) {
             System.out.println("Sorry! Not enough funds to proceed with payment.");
+            System.out.println("Total amount needed: " + totalAmount);
             return;
         }
-    
-        // Deduct balance and mark bill as paid
-        balance -= bill.getAmount();
-        bill.markPaid();
-    
-        // Create payment record
-        Payment payment = new Payment(
-            payments.size() + 1,
-            bill.getAmount(),
-            bill.getDueDate(),
-            "PROCESSED",
-            bill.getId()
-        );
-        payments.add(payment);
-    
-        System.out.println("Payment has been completed for Bill with id " + billId + ".");
-        System.out.println("Your current balance after payment: " + balance);
+
+        // Phase 3: Execute payment for all valid bills
+        for (Bill bill : billsToPay) {
+            balance -= bill.getAmount();
+            bill.markPaid();
+            Payment payment = new Payment(
+                payments.size() + 1,
+                bill.getAmount(),
+                LocalDate.now(), // Use current date for payment
+                "PROCESSED",
+                bill.getId()
+            );
+            payments.add(payment);
+        }
+
+        System.out.println("Payment has been completed for " + billsToPay.size() + " bill(s).");
+        System.out.println("Your current balance: " + balance);
     }
 
     // List all payments

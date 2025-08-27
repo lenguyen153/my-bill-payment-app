@@ -3,9 +3,9 @@ package com.momo.app;
 import java.time.LocalDate;
 
 public class Payment {
-    private int id;
-    private int amount;
-    private LocalDate paymentDate;
+    private int id; // id of the payment
+    private int amount; // amount of the payment
+    private LocalDate paymentDate; // date the of the payment
     private String state;   // PROCESSED or PENDING
     private int billId;     // id of the bill
 
